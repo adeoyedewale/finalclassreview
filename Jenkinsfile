@@ -38,15 +38,15 @@ pipeline {
             //        sh 'docker-compose build'
             //    }
         // }
-        stage('Push') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+        //stage('Push') {
+        //    steps {
+        //        withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+        //            sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
                     //sh 'docker-compose push myapp'
-                    sh 'docker push eruobodo/myximage:$BUILD_NUMBER'
-                }
-            }
-        }
+        //            sh 'docker push eruobodo/myximage:$BUILD_NUMBER'
+        //        }
+        //    }
+       // }
         stage ('Publish to ECR') {
             steps {
             //sh 'aws ecr-public get-login-password --region eu-west-2 | docker login --username AWS --password-stdin public.ecr.aws/t7e2c6o4'
