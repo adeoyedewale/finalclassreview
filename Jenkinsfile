@@ -4,6 +4,8 @@ pipeline {
     environment {
 	    DOCKERHUB_CREDENTIALS=credentials('dockerhub')
 	    registry = "public.ecr.aws/c6p1p1z3/devops-code-challenge"
+	    registryCredential = '6be112af-5ae7-44b2-a28e-fd9eb84084be'
+	    dockerImage = ''
     }
 
     stages {
@@ -31,7 +33,7 @@ pipeline {
         stage('Create Docker Image') {
             steps {
                 //sh 'docker build -t eruobodo/myximage:$BUILD_NUMBER .'
-		    script{dockerImage = docker.build registry}
+		    script{dockerImage = docker.build registry + ":$BUILD_NUMBER"}
             }
         }
             
@@ -49,7 +51,19 @@ pipeline {
         //        }
         //    }
        // }
-        stage ('Login to ECR') {
+	    
+	stage('Deploy image') {
+        steps{
+            script{
+                docker.withRegistry("https://" + registry, "ecr:us-east-1:" + registryCredential) {
+                    dockerImage.push()
+                }
+            }
+        }
+    }
+	    
+	    
+        /*stage ('Login to ECR') {
             steps {
             //sh 'aws ecr-public get-login-password --region eu-west-2 | docker login --username AWS --password-stdin public.ecr.aws/t7e2c6o4'
 		    script{
@@ -65,7 +79,7 @@ pipeline {
                 	}
 		} 
             }
-        }
+        } */
     }
     post {
             always {
