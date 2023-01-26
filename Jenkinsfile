@@ -3,6 +3,8 @@ pipeline {
   
     environment {
 	    DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+	    registry = "public.ecr.aws/c6p1p1z3/devops-code-challenge"
+    }
     }
 
     stages {
@@ -29,7 +31,8 @@ pipeline {
         
         stage('Create Docker Image') {
             steps {
-                sh 'docker build -t eruobodo/myximage:$BUILD_NUMBER .'
+                //sh 'docker build -t eruobodo/myximage:$BUILD_NUMBER .'
+		 dockerImage = docker.build registry
             }
         }
             
