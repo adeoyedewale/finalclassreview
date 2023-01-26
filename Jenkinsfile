@@ -32,8 +32,7 @@ pipeline {
         
         stage('Create Docker Image') {
             steps {
-                //sh 'docker build -t eruobodo/myximage:$BUILD_NUMBER .'
-		    script{dockerImage = docker.build registry + ":$BUILD_NUMBER"}
+                sh 'docker build -t eruobodo/myximage:$BUILD_NUMBER .'
             }
         }
             
@@ -52,47 +51,25 @@ pipeline {
         //    }
        // }
 	    
-	    stage ('Login to ECR') {
-            steps {
-		    script{
-		    withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"]) {
-                    sh 'docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) public.ecr.aws/c6p1p1z3' //985729960198.dkr.ecr.eu-west-2.amazonaws.com'
-		    }
-            //sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c6p1p1z3'
-	    	}
-	    }
-	    }
+	
 	    
 	    
-	stage('Deploy image') {
-        steps{
-            script{
-                docker.withRegistry("https://" + registry, "ecr:us-east-1:" + registryCredential) {
-                    dockerImage.push()
-                }
-            }
-        }
-    }
-	    
-	    
-        /*stage ('Login to ECR') {
+        stage ('Login to ECR') {
             steps {
             //sh 'aws ecr-public get-login-password --region eu-west-2 | docker login --username AWS --password-stdin public.ecr.aws/t7e2c6o4'
-		    script{
-			    withAWS(credentials: '6be112af-5ae7-44b2-a28e-fd9eb84084be', region: 'us-east-1') {
-                //withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"]) {
-                    //sh 'docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) public.ecr.aws/c6p1p1z3' //985729960198.dkr.ecr.eu-west-2.amazonaws.com'
-                    //sh 'docker tag eruobodo/myximage:$BUILD_NUMBER public.ecr.aws/c6p1p1z3/devops-code-challenge:$BUILD_NUMBER'
-                    //sh 'docker push public.ecr.aws/c6p1p1z3/devops-code-challenge:$BUILD_NUMBER
-		    	sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c6p1p1z3'
-			sh 'docker build -t devops-code-challenge .'
-			sh 'docker tag devops-code-challenge:latest public.ecr.aws/c6p1p1z3/devops-code-challenge:latest'
-			sh 'docker push public.ecr.aws/c6p1p1z3/devops-code-challenge:latest'
+		 //withAWS(credentials: '6be112af-5ae7-44b2-a28e-fd9eb84084be', region: 'us-east-1') {
+                withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"]) {
+                    sh 'docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) public.ecr.aws/c6p1p1z3' //985729960198.dkr.ecr.eu-west-2.amazonaws.com'
+                    sh 'docker tag eruobodo/myximage:$BUILD_NUMBER public.ecr.aws/c6p1p1z3/devops-code-challenge:$BUILD_NUMBER'
+                    sh 'docker push public.ecr.aws/c6p1p1z3/devops-code-challenge:$BUILD_NUMBER
+		    	//sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c6p1p1z3'
+			//sh 'docker build -t devops-code-challenge .'
+			//sh 'docker tag devops-code-challenge:latest public.ecr.aws/c6p1p1z3/devops-code-challenge:latest'
+			//sh 'docker push public.ecr.aws/c6p1p1z3/devops-code-challenge:latest'
                 	}
 		} 
             }
-        } */
-    }
+        }
     post {
             always {
                 cleanWs()
