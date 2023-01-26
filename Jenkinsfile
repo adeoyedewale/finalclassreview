@@ -5,7 +5,6 @@ pipeline {
 	    DOCKERHUB_CREDENTIALS=credentials('dockerhub')
 	    registry = "public.ecr.aws/c6p1p1z3/devops-code-challenge"
     }
-    }
 
     stages {
       stage('Checkout Code') {
