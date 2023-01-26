@@ -4,7 +4,7 @@ pipeline {
     environment {
 	    DOCKERHUB_CREDENTIALS=credentials('dockerhub')
 	    registry = "public.ecr.aws/c6p1p1z3/devops-code-challenge"
-	    registryCredential = '6be112af5ae744b2a28efd9eb84084be'
+	    registryCredential = '6be112af-5ae7-44b2-a28e-fd9eb84084be'
 	    dockerImage = ''
     }
 
@@ -51,6 +51,13 @@ pipeline {
         //        }
         //    }
        // }
+	    
+	    stage ('Login to ECR') {
+            steps {
+            sh 'aws ecr-public get-login-password --region us-west-1 | docker login --username AWS --password-stdin public.ecr.aws/c6p1p1z3'
+	    	}
+	    }
+	    
 	    
 	stage('Deploy image') {
         steps{
