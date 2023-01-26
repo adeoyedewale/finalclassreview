@@ -61,7 +61,7 @@ pipeline {
                 withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"]) {
                     sh 'docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) public.ecr.aws/c6p1p1z3' //985729960198.dkr.ecr.eu-west-2.amazonaws.com'
                     sh 'docker tag eruobodo/myximage:$BUILD_NUMBER public.ecr.aws/c6p1p1z3/devops-code-challenge:$BUILD_NUMBER'
-                    sh 'docker push public.ecr.aws/c6p1p1z3/devops-code-challenge:$BUILD_NUMBER
+                    sh 'docker push public.ecr.aws/c6p1p1z3/devops-code-challenge:$BUILD_NUMBER'
 		    	//sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c6p1p1z3'
 			//sh 'docker build -t devops-code-challenge .'
 			//sh 'docker tag devops-code-challenge:latest public.ecr.aws/c6p1p1z3/devops-code-challenge:latest'
