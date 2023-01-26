@@ -31,7 +31,7 @@ pipeline {
         stage('Create Docker Image') {
             steps {
                 //sh 'docker build -t eruobodo/myximage:$BUILD_NUMBER .'
-		 dockerImage = docker.build registry
+		    script{dockerImage = docker.build registry}
             }
         }
             
