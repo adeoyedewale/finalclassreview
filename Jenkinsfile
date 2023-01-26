@@ -30,11 +30,11 @@ pipeline {
             }
         }
         
-        stage('Create Docker Image') {
-            steps {
-                sh 'docker build -t eruobodo/myximage:$BUILD_NUMBER .'
-            }
-        }
+        //stage('Create Docker Image') {
+          //  steps {
+                //sh 'docker build -t eruobodo/myximage:$BUILD_NUMBER .'
+           // }
+       // }
             
             //stage('Build') {
             //    steps{
@@ -51,7 +51,7 @@ pipeline {
         //    }
        // }
 	    
-	stage ('Publish to ECR') {
+	stage ('Build and Publish to ECR') {
 	      steps {
 		sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c6p1p1z3'
 		//withAWS(credentials: 'sam-jenkins-demo-credentials', region: 'eu-west-2') {
