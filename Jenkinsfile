@@ -2,6 +2,8 @@ pipeline {
     agent any
   
     environment {
+	    AWS_DEFAULT_REGION="us-east-1"
+    	    THE_BUTLER_SAYS_SO=credentials('aws-cred')
 	    DOCKERHUB_CREDENTIALS=credentials('dockerhub')
 	    registry = "public.ecr.aws/c6p1p1z3/devops-code-challenge"
 	    registryCredential = '6be112af-5ae7-44b2-a28e-fd9eb84084be'
@@ -55,13 +57,13 @@ pipeline {
 	      steps {
 		//sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c6p1p1z3'
 		//withAWS(credentials: 'sam-jenkins-demo-credentials', region: 'eu-west-2') {
-		 withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"]) {
+		 //withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY_ID}", "AWS_SECRET_ACCESS_KEY=${env.AWS_SECRET_ACCESS_KEY}", "AWS_DEFAULT_REGION=${env.AWS_DEFAULT_REGION}"]) {
 		  //sh 'docker login -u AWS -p $(aws ecr-public get-login-password --region us-east-1) public.ecr.aws/c6p1p1z3' //985729960198.dkr.ecr.eu-west-2.amazonaws.com'
 		  sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/c6p1p1z3'
-		sh 'docker build -t devops-code-challenge .'
+		  sh 'docker build -t devops-code-challenge .'
 		  sh 'docker tag devops-code-challenge:latest public.ecr.aws/c6p1p1z3/devops-code-challenge:latest'
 		  sh 'docker push public.ecr.aws/c6p1p1z3/devops-code-challenge:latest'
-	       }
+	       //}
 	}
     }
     }
